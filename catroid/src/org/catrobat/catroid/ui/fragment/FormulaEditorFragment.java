@@ -54,6 +54,9 @@ import com.actionbarsherlock.view.Menu;
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.content.bricks.Brick;
+import org.catrobat.catroid.content.bricks.KodeyMotorBackwardActionBrick;
+import org.catrobat.catroid.content.bricks.KodeyMotorForwardActionBrick;
+import org.catrobat.catroid.content.bricks.KodeyRGBLightBrick;
 import org.catrobat.catroid.formulaeditor.Formula;
 import org.catrobat.catroid.formulaeditor.FormulaEditorEditText;
 import org.catrobat.catroid.formulaeditor.FormulaElement;
@@ -76,6 +79,9 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 	private static final int TIME_WINDOW = 2000;
 
 	public static final String FORMULA_EDITOR_FRAGMENT_TAG = "formula_editor_fragment";
+	public static final String FORMULA_EDITOR_MULTIPLE_SEEKBAR_FRAGMENT_TAG = "kodey_editor_multiple_seekbar_fragment";
+	public static final String FORMULA_EDITOR_MOTOR_FORWARD_SINGLE_SEEKBAR_FRAGMENT_TAG = "kodey_motor_forward_editor_single_seekbar_fragment";
+	public static final String FORMULA_EDITOR_MOTOR_BACKWARD_SINGLE_SEEKBAR_FRAGMENT_TAG = "kodey_motor_backward_editor_single_seekbar_fragment";
 	public static final String BRICK_BUNDLE_ARGUMENT = "brick";
 	public static final String FORMULA_BUNDLE_ARGUMENT = "formula";
 
@@ -104,6 +110,13 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 		setUpActionBar();
 		currentBrick = (Brick) getArguments().getSerializable(BRICK_BUNDLE_ARGUMENT);
 		currentFormula = (Formula) getArguments().getSerializable(FORMULA_BUNDLE_ARGUMENT);
+		/*
+		if (currentFormula.containsArduinoSensors()) {
+			ProjectManager.getInstance().getCurrentProject().setIsArduinoProject(true);
+		} else {
+			ProjectManager.getInstance().getCurrentProject().setIsArduinoProject(false);
+		}
+		*/
 	}
 
 	private void setUpActionBar() {
@@ -129,6 +142,19 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 		FragmentManager fragmentManager = activity.getSupportFragmentManager();
 		FragmentTransaction fragTransaction = fragmentManager.beginTransaction();
 
+		Fragment fragment = fragmentManager.findFragmentById(R.id.script_fragment_container);
+		String KODEY_TAG = ScriptFragment.TAG;
+		if(fragment.getClass() == KodeyMotorForwardSingleSeekbarFragment.class) {
+			KODEY_TAG = FORMULA_EDITOR_MOTOR_FORWARD_SINGLE_SEEKBAR_FRAGMENT_TAG;
+			((KodeyMotorForwardActionBrick)brick).setIsFormulaEditorPreview(true);
+		} else if(fragment.getClass() == KodeyMotorBackwardSingleSeekbarFragment.class){
+			KODEY_TAG = FORMULA_EDITOR_MOTOR_BACKWARD_SINGLE_SEEKBAR_FRAGMENT_TAG;
+			((KodeyMotorBackwardActionBrick)brick).setIsFormulaEditorPreview(true);
+		} else if(fragment.getClass() == KodeyMultipleSeekbarFragment.class){
+			KODEY_TAG = FORMULA_EDITOR_MULTIPLE_SEEKBAR_FRAGMENT_TAG;
+			((KodeyRGBLightBrick)brick).setIsFormulaEditorPreview(true);
+		}
+
 		if (formulaEditorFragment == null) {
 			formulaEditorFragment = new FormulaEditorFragment();
 			Bundle bundle = new Bundle();
@@ -137,12 +163,40 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 			formulaEditorFragment.setArguments(bundle);
 
 			fragTransaction.add(R.id.script_fragment_container, formulaEditorFragment, FORMULA_EDITOR_FRAGMENT_TAG);
-			fragTransaction.hide(fragmentManager.findFragmentByTag(ScriptFragment.TAG));
+			fragTransaction.hide(fragmentManager.findFragmentByTag(KODEY_TAG));
+
+			/*
+			//ToDo: #Kodey !!!!!!!
+			if(fragmentManager.findFragmentByTag(FORMULA_EDITOR_MULTIPLE_SEEKBAR_FRAGMENT_TAG) != null) {
+				fragTransaction.hide(fragmentManager.findFragmentByTag(KodeyMultipleSeekbarFragment.FORMULA_EDITOR_MULTIPLE_SEEKBAR_FRAGMENT_TAG));
+			}
+			if(fragmentManager.findFragmentByTag(FORMULA_EDITOR_MOTOR_FORWARD_SINGLE_SEEKBAR_FRAGMENT_TAG) != null) {
+				fragTransaction.hide(fragmentManager.findFragmentByTag(KodeyMotorForwardSingleSeekbarFragment.FORMULA_EDITOR_MOTOR_FORWARD_SINGLE_SEEKBAR_FRAGMENT_TAG));
+			}
+			if(fragmentManager.findFragmentByTag(FORMULA_EDITOR_MOTOR_BACKWARD_SINGLE_SEEKBAR_FRAGMENT_TAG) != null) {
+				fragTransaction.hide(fragmentManager.findFragmentByTag(KodeyMotorBackwardSingleSeekbarFragment.FORMULA_EDITOR_MOTOR_BACKWARD_SINGLE_SEEKBAR_FRAGMENT_TAG));
+			}
+			*/
+
 			fragTransaction.show(formulaEditorFragment);
 			BottomBar.hideBottomBar(activity);
 		} else if (formulaEditorFragment.isHidden()) {
 			formulaEditorFragment.updateBrickViewAndFormula(brick, formula);
-			fragTransaction.hide(fragmentManager.findFragmentByTag(ScriptFragment.TAG));
+			fragTransaction.hide(fragmentManager.findFragmentByTag(KODEY_TAG));
+
+			/*
+			//ToDo: #Kodey !!!!!!!
+			if(fragmentManager.findFragmentByTag(FORMULA_EDITOR_MULTIPLE_SEEKBAR_FRAGMENT_TAG) != null) {
+				fragTransaction.hide(fragmentManager.findFragmentByTag(KodeyMultipleSeekbarFragment.FORMULA_EDITOR_MULTIPLE_SEEKBAR_FRAGMENT_TAG));
+			}
+			if(fragmentManager.findFragmentByTag(FORMULA_EDITOR_MOTOR_FORWARD_SINGLE_SEEKBAR_FRAGMENT_TAG) != null) {
+				fragTransaction.hide(fragmentManager.findFragmentByTag(KodeyMotorForwardSingleSeekbarFragment.FORMULA_EDITOR_MOTOR_FORWARD_SINGLE_SEEKBAR_FRAGMENT_TAG));
+			}
+			if(fragmentManager.findFragmentByTag(FORMULA_EDITOR_MOTOR_BACKWARD_SINGLE_SEEKBAR_FRAGMENT_TAG) != null) {
+				fragTransaction.hide(fragmentManager.findFragmentByTag(KodeyMotorBackwardSingleSeekbarFragment.FORMULA_EDITOR_MOTOR_BACKWARD_SINGLE_SEEKBAR_FRAGMENT_TAG));
+			}
+			*/
+
 			fragTransaction.show(formulaEditorFragment);
 			BottomBar.hideBottomBar(activity);
 		} else {
@@ -163,7 +217,6 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 				LinearLayout.LayoutParams.MATCH_PARENT));
 		brickView = newBrickView;
 		fragmentView.getViewTreeObserver().addOnGlobalLayoutListener(this);
-
 	}
 
 	private void updateBrickViewAndFormula(Brick newBrick, Formula newFormula) {
@@ -182,14 +235,55 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 		FragmentManager fragmentManager = activity.getSupportFragmentManager();
 		FragmentTransaction fragTransaction = fragmentManager.beginTransaction();
 		fragTransaction.hide(this);
-		fragTransaction.show(fragmentManager.findFragmentByTag(ScriptFragment.TAG));
+
+		//ToDo: #Kodey check for RGB Brick
+		if(fragmentManager.findFragmentByTag(FORMULA_EDITOR_MULTIPLE_SEEKBAR_FRAGMENT_TAG) != null) {
+			if (fragmentManager.findFragmentByTag(ScriptFragment.TAG).getTag() == FORMULA_EDITOR_MULTIPLE_SEEKBAR_FRAGMENT_TAG) {
+				fragTransaction.show(fragmentManager.findFragmentByTag(KodeyMultipleSeekbarFragment.FORMULA_EDITOR_MULTIPLE_SEEKBAR_FRAGMENT_TAG));
+				fragTransaction.hide(fragmentManager.findFragmentByTag(ScriptFragment.TAG));
+			} else {
+				fragTransaction.show(fragmentManager.findFragmentByTag(ScriptFragment.TAG));
+				fragTransaction.remove(fragmentManager.findFragmentByTag(KodeyMultipleSeekbarFragment.FORMULA_EDITOR_MULTIPLE_SEEKBAR_FRAGMENT_TAG));
+				((KodeyRGBLightBrick)currentBrick).setIsFormulaEditorPreview(false);
+			}
+		} else {
+			fragTransaction.show(fragmentManager.findFragmentByTag(ScriptFragment.TAG));
+		}
+
+		//ToDo: #Kodey check for Motor Forward Brick
+		if(fragmentManager.findFragmentByTag(FORMULA_EDITOR_MOTOR_FORWARD_SINGLE_SEEKBAR_FRAGMENT_TAG) != null) {
+			if (fragmentManager.findFragmentByTag(ScriptFragment.TAG).getTag() == FORMULA_EDITOR_MOTOR_FORWARD_SINGLE_SEEKBAR_FRAGMENT_TAG) {
+				fragTransaction.show(fragmentManager.findFragmentByTag(KodeyMotorForwardSingleSeekbarFragment.FORMULA_EDITOR_MOTOR_FORWARD_SINGLE_SEEKBAR_FRAGMENT_TAG));
+				fragTransaction.hide(fragmentManager.findFragmentByTag(ScriptFragment.TAG));
+			} else {
+				fragTransaction.show(fragmentManager.findFragmentByTag(ScriptFragment.TAG));
+				fragTransaction.remove(fragmentManager.findFragmentByTag(KodeyMotorForwardSingleSeekbarFragment.FORMULA_EDITOR_MOTOR_FORWARD_SINGLE_SEEKBAR_FRAGMENT_TAG));
+				((KodeyMotorForwardActionBrick)currentBrick).setIsFormulaEditorPreview(false);
+			}
+		} else {
+			fragTransaction.show(fragmentManager.findFragmentByTag(ScriptFragment.TAG));
+		}
+
+		//ToDo: #Kodey check for Motor Backward Brick
+		if(fragmentManager.findFragmentByTag(FORMULA_EDITOR_MOTOR_BACKWARD_SINGLE_SEEKBAR_FRAGMENT_TAG) != null) {
+			if (fragmentManager.findFragmentByTag(ScriptFragment.TAG).getTag() == FORMULA_EDITOR_MOTOR_BACKWARD_SINGLE_SEEKBAR_FRAGMENT_TAG) {
+				fragTransaction.show(fragmentManager.findFragmentByTag(KodeyMotorBackwardSingleSeekbarFragment.FORMULA_EDITOR_MOTOR_BACKWARD_SINGLE_SEEKBAR_FRAGMENT_TAG));
+				fragTransaction.hide(fragmentManager.findFragmentByTag(ScriptFragment.TAG));
+			} else {
+				fragTransaction.show(fragmentManager.findFragmentByTag(ScriptFragment.TAG));
+				fragTransaction.remove(fragmentManager.findFragmentByTag(KodeyMotorBackwardSingleSeekbarFragment.FORMULA_EDITOR_MOTOR_BACKWARD_SINGLE_SEEKBAR_FRAGMENT_TAG));
+				((KodeyMotorBackwardActionBrick)currentBrick).setIsFormulaEditorPreview(false);
+			}
+		} else {
+			fragTransaction.show(fragmentManager.findFragmentByTag(ScriptFragment.TAG));
+		}
+
 		fragTransaction.commit();
 
 		resetActionBar();
 
 		BottomBar.showBottomBar(activity);
 		BottomBar.showPlayButton(activity);
-
 	}
 
 	@Override
@@ -453,13 +547,13 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 								}
 							}).setPositiveButton(R.string.yes, new OnClickListener() {
 
-								@Override
-								public void onClick(DialogInterface dialog, int which) {
-									if (saveFormulaIfPossible()) {
-										onUserDismiss();
-									}
-								}
-							}).create().show();
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							if (saveFormulaIfPossible()) {
+								onUserDismiss();
+							}
+						}
+					}).create().show();
 
 				} else {
 					onUserDismiss();
@@ -584,7 +678,6 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 		if (variableDeletedReceiver == null) {
 			variableDeletedReceiver = new VariableDeletedReceiver();
 		}
-
 		IntentFilter filterVariableDeleted = new IntentFilter(ScriptActivity.ACTION_VARIABLE_DELETED);
 		getActivity().registerReceiver(variableDeletedReceiver, filterVariableDeleted);
 		BottomBar.hideBottomBar(getSherlockActivity());

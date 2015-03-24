@@ -27,21 +27,21 @@ import org.catrobat.catroid.bluetooth.base.BluetoothDevice;
 
 public interface Kodey extends BluetoothDevice {
 
-	void playTone(int selected_tone, int duration);
+	public void playTone(int selected_tone, int duration);
 
-	void moveLeftMotorForward(int speed);
-	void moveLeftMotorBackward(int speed);
+	public void moveLeftMotorForward(int speed);
+	public void moveLeftMotorBackward(int speed);
 
-	void moveRightMotorForward(int speed);
-	void moveRightMotorBackward(int speed);
+	public void moveRightMotorForward(int speed);
+	public void moveRightMotorBackward(int speed);
 
-	void stopLeftMotor();
-	void stopRightMotor();
-	void stopAllMovements();
+	public void stopLeftMotor();
+	public void stopRightMotor();
+	public void stopAllMovements();
 
-	void setLeftRGBLightColor(int red, int green, int blue);
-	void setRightRGBLightColor(int red, int green, int blue);
+	public void setLeftRGBLightColor(int red, int green, int blue);
+	public void setRightRGBLightColor(int red, int green, int blue);
 
-	void reportFirmwareVersion();
+	public void reportFirmwareVersion();
 
 }

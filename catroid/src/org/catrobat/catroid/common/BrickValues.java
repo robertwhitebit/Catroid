@@ -66,7 +66,15 @@ public final class BrickValues {
 	public static final int DRONE_MOVE_BRICK_DEFAULT_TIME_MILLISECONDS = 1000;
 	public static final float DRONE_MOVE_BRICK_DEFAULT_MOVE_POWER_PERCENT = 0.2f;
 
-    //Constants Variables
+	//Constants Kodey
+	public static final int KODEY_SPEED = 100;
+	public static final int KODEY_DURATION = 1;
+	public static final int KODEY_VALUE_RED = 0;
+	public static final int KODEY_VALUE_GREEN = 255;
+	public static final int KODEY_VALUE_BLUE = 255;
+	public static final String KODEY_IF_SENSOR_DEFAULT_VALUE = "Front Left Sensor";
+
+	//Constants Variables
 	public static final double SET_VARIABLE = 0d;
 	public static final double CHANGE_VARIABLE = 0d;
 
