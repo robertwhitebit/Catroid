@@ -75,8 +75,8 @@
     <string name="preference_description_select_camera">Select camera which is used for face detection</string>
 	<string name="preference_title_enable_quadcopter_bricks">ARDrone 2.0 bricks</string>
     <string name="preference_description_quadcopter_bricks">Allow to control the ARDrone 2.0 quadcopter</string>
-    <string name="preference_title_enable_kodey_bricks">Kodey Pro bricks</string>
-    <string name="preference_description_kodey_bricks">Allow to control Kodey Pro bricks</string>
+    <string name="preference_title_enable_kodey_bricks">Phiro Pro bricks</string>
+    <string name="preference_description_kodey_bricks">Allow to control Phiro Pro bricks</string>
 
     <!--  -->
 
@@ -334,7 +334,7 @@
     <string name="category_user_bricks">My Bricks</string>
     <string name="category_lego_nxt">Lego NXT</string>
     <string name="category_drone">ARDrone</string>
-    <string name="category_kodey">Kodey Pro</string>
+    <string name="category_kodey">Phiro Pro</string>
     <!--  -->
 
 
@@ -585,33 +585,33 @@
 
     <!-- Kodey bricks -->
     <!-- motor -->
-    <string name="kodey_motor_stop">Kodey Pro stop motor</string>
-    <string name="brick_kodey_motor_forward_action">Kodey Pro move motor forward</string>
-    <string name="brick_kodey_motor_backward_action">Kodey Pro move motor backward</string>
+    <string name="kodey_motor_stop">Phiro Pro stop motor</string>
+    <string name="brick_kodey_motor_forward_action">Phiro Pro move motor forward</string>
+    <string name="brick_kodey_motor_backward_action">Phiro Pro move motor backward</string>
     <string name="kodey_motor_speed">Speed</string>
 
     <!-- sensor -->
-    <string name="brick_kodey_sensor_action">Kodey Pro</string>
+    <string name="brick_kodey_sensor_action">Phiro Pro</string>
     <string name="brick_kodey_sensor_begin">If \n</string>
     <string name="brick_kodey_sensor_second_part">is activated</string>
     <string name="brick_kodey_sensor_else">Else</string>
     <string name="brick_kodey_sensor_end">End If</string>
 
     <!-- tone -->
-    <string name="kodey_play_tone">Kodey Pro music\n</string>
+    <string name="kodey_play_tone">Phiro Pro music\n</string>
     <string name="kodey_tone_duration">Duration</string>
     <string name="brick_kodey_select_tone">tone</string>
 
     <!-- light -->
-    <string name="brick_kodey_rgb_led_action">Kodey Pro light</string>
+    <string name="brick_kodey_rgb_led_action">Phiro Pro light</string>
     <string name="kodey_rgb_led_red">Red</string>
     <string name="kodey_rgb_led_green">Green</string>
     <string name="kodey_rgb_led_blue">Blue</string>
     <!--  -->
 
-    <string name="kodey_color_chooser_title">Kodey Pro color chooser</string>
-    <string name="kodey_motor_forward_title">Kodey Pro move motor forward chooser</string>
-    <string name="kodey_motor_backward_title">Kodey Pro move motor backward chooser</string>
+    <string name="kodey_color_chooser_title">Phiro Pro color chooser</string>
+    <string name="kodey_motor_forward_title">Phiro Pro move motor forward chooser</string>
+    <string name="kodey_motor_backward_title">Phiro Pro move motor backward chooser</string>
 
     <!-- Kodey tone strings -->
     <string name="kodey_tone_do">Do</string>
@@ -723,12 +723,12 @@
     <string name="formula_editor_sensor_face_size">face_size</string>
     <string name="formula_editor_sensor_face_x_position">face_x_position</string>
     <string name="formula_editor_sensor_face_y_position">face_y_position</string>
-    <string name="formula_editor_kodey_sensor_front_left">kodey_pro_front_left_sensor</string>
-    <string name="formula_editor_kodey_sensor_front_right">kodey_pro_front_right_sensor</string>
-    <string name="formula_editor_kodey_sensor_side_left">kodey_pro_side_left_sensor</string>
-    <string name="formula_editor_kodey_sensor_side_right">kodey_pro_side_right_sensor</string>
-    <string name="formula_editor_kodey_sensor_bottom_left">kodey_pro_bottom_left_sensor</string>
-    <string name="formula_editor_kodey_sensor_bottom_right">kodey_pro_bottom_right_sensor</string>
+    <string name="formula_editor_kodey_sensor_front_left">phiro_pro_front_left_sensor</string>
+    <string name="formula_editor_kodey_sensor_front_right">phiro_pro_front_right_sensor</string>
+    <string name="formula_editor_kodey_sensor_side_left">phiro_pro_side_left_sensor</string>
+    <string name="formula_editor_kodey_sensor_side_right">phiro_pro_side_right_sensor</string>
+    <string name="formula_editor_kodey_sensor_bottom_left">phiro_pro_bottom_left_sensor</string>
+    <string name="formula_editor_kodey_sensor_bottom_right">phiro_pro_bottom_right_sensor</string>
     <string name="formula_editor_object_x">position_x</string>
     <string name="formula_editor_object_y">position_y</string>
     <string name="formula_editor_object_ghosteffect">transparency</string>
