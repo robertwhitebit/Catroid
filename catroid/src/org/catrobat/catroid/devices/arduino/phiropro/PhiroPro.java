@@ -1,6 +1,6 @@
 /*
  * Catroid: An on-device visual programming system for Android devices
- * Copyright (C) 2010-2014 The Catrobat Team
+ * Copyright (C) 2010-2015 The Catrobat Team
  * (<http://developer.catrobat.org/credits>)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,26 +20,28 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.catrobat.catroid.bluetooth.base;
 
-import org.catrobat.catroid.devices.arduino.phiropro.PhiroPro;
-import org.catrobat.catroid.stage.StageResourceInterface;
+package org.catrobat.catroid.devices.arduino.phiropro;
 
-import java.util.UUID;
+import org.catrobat.catroid.bluetooth.base.BluetoothDevice;
 
-public interface BluetoothDevice extends StageResourceInterface {
+public interface PhiroPro extends BluetoothDevice {
 
-//	Class<LegoNXT> LEGO_NXT = LegoNXT.class;
-//	Class<Arduino> ARDUINO = Arduino.class;
-//	Class<Albert> ALBERT = Albert.class;
-	Class<PhiroPro> PHIRO_PRO = PhiroPro.class;
+	public void playTone(int selected_tone, int duration);
 
-	String getName();
-	Class<? extends BluetoothDevice> getDeviceType();
-	void setConnection(BluetoothConnection connection);
-	void disconnect();
+	public void moveLeftMotorForward(int speed);
+	public void moveLeftMotorBackward(int speed);
 
-	boolean isAlive();
+	public void moveRightMotorForward(int speed);
+	public void moveRightMotorBackward(int speed);
 
-	UUID getBluetoothDeviceUUID();
+	public void stopLeftMotor();
+	public void stopRightMotor();
+	public void stopAllMovements();
+
+	public void setLeftRGBLightColor(int red, int green, int blue);
+	public void setRightRGBLightColor(int red, int green, int blue);
+
+	public void reportFirmwareVersion();
+
 }

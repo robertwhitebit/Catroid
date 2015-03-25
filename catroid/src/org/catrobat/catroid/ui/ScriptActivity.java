@@ -51,9 +51,9 @@ import org.catrobat.catroid.ui.dragndrop.DragAndDropListView;
 import org.catrobat.catroid.ui.fragment.FormulaEditorFragment;
 import org.catrobat.catroid.ui.fragment.FormulaEditorListFragment;
 import org.catrobat.catroid.ui.fragment.FormulaEditorVariableListFragment;
-import org.catrobat.catroid.ui.fragment.KodeyMotorBackwardSingleSeekbarFragment;
-import org.catrobat.catroid.ui.fragment.KodeyMotorForwardSingleSeekbarFragment;
-import org.catrobat.catroid.ui.fragment.KodeyMultipleSeekbarFragment;
+import org.catrobat.catroid.ui.fragment.PhiroProMotorBackwardSingleSeekbarFragment;
+import org.catrobat.catroid.ui.fragment.PhiroProMotorForwardSingleSeekbarFragment;
+import org.catrobat.catroid.ui.fragment.PhiroProMultipleSeekbarFragment;
 import org.catrobat.catroid.ui.fragment.LookFragment;
 import org.catrobat.catroid.ui.fragment.ScriptActivityFragment;
 import org.catrobat.catroid.ui.fragment.ScriptFragment;
@@ -334,24 +334,24 @@ public class ScriptActivity extends BaseActivity {
 			return formulaEditor.onKey(null, keyCode, event);
 		}
 
-		//ToDo: #Kodey check if we are allowed to do this
-		KodeyMultipleSeekbarFragment kodeyFragment = (KodeyMultipleSeekbarFragment) getSupportFragmentManager().findFragmentByTag(
-				KodeyMultipleSeekbarFragment.FORMULA_EDITOR_MULTIPLE_SEEKBAR_FRAGMENT_TAG);
-		KodeyMotorForwardSingleSeekbarFragment kodeyMotorForwardFragment = (KodeyMotorForwardSingleSeekbarFragment) getSupportFragmentManager().findFragmentByTag(
-				KodeyMotorForwardSingleSeekbarFragment.FORMULA_EDITOR_MOTOR_FORWARD_SINGLE_SEEKBAR_FRAGMENT_TAG);
-		KodeyMotorBackwardSingleSeekbarFragment kodeyMotorBackwardFragment = (KodeyMotorBackwardSingleSeekbarFragment) getSupportFragmentManager().findFragmentByTag(
-				KodeyMotorBackwardSingleSeekbarFragment.FORMULA_EDITOR_MOTOR_BACKWARD_SINGLE_SEEKBAR_FRAGMENT_TAG);
-		if (kodeyFragment != null && kodeyFragment.isVisible()) {
+		//ToDo: #PhiroPro check if we are allowed to do this
+		PhiroProMultipleSeekbarFragment phiroProFragment = (PhiroProMultipleSeekbarFragment) getSupportFragmentManager().findFragmentByTag(
+				PhiroProMultipleSeekbarFragment.FORMULA_EDITOR_MULTIPLE_SEEKBAR_FRAGMENT_TAG);
+		PhiroProMotorForwardSingleSeekbarFragment phiroProMotorForwardFragment = (PhiroProMotorForwardSingleSeekbarFragment) getSupportFragmentManager().findFragmentByTag(
+				PhiroProMotorForwardSingleSeekbarFragment.FORMULA_EDITOR_MOTOR_FORWARD_SINGLE_SEEKBAR_FRAGMENT_TAG);
+		PhiroProMotorBackwardSingleSeekbarFragment phiroProMotorBackwardFragment = (PhiroProMotorBackwardSingleSeekbarFragment) getSupportFragmentManager().findFragmentByTag(
+				PhiroProMotorBackwardSingleSeekbarFragment.FORMULA_EDITOR_MOTOR_BACKWARD_SINGLE_SEEKBAR_FRAGMENT_TAG);
+		if (phiroProFragment != null && phiroProFragment.isVisible()) {
 			scriptFragment.getAdapter().updateProjectBrickList();
-			return kodeyFragment.onKey(null, keyCode, event);
+			return phiroProFragment.onKey(null, keyCode, event);
 		}
-		if (kodeyMotorForwardFragment != null && kodeyMotorForwardFragment.isVisible()) {
+		if (phiroProMotorForwardFragment != null && phiroProMotorForwardFragment.isVisible()) {
 			scriptFragment.getAdapter().updateProjectBrickList();
-			return kodeyMotorForwardFragment.onKey(null, keyCode, event);
+			return phiroProMotorForwardFragment.onKey(null, keyCode, event);
 		}
-		if (kodeyMotorBackwardFragment != null && kodeyMotorBackwardFragment.isVisible()) {
+		if (phiroProMotorBackwardFragment != null && phiroProMotorBackwardFragment.isVisible()) {
 			scriptFragment.getAdapter().updateProjectBrickList();
-			return kodeyMotorBackwardFragment.onKey(null, keyCode, event);
+			return phiroProMotorBackwardFragment.onKey(null, keyCode, event);
 		}
 
 		if (soundFragment != null && soundFragment.isVisible() && soundFragment.onKey(null, keyCode, event)) {

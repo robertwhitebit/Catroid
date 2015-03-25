@@ -47,7 +47,7 @@ public interface Brick extends Serializable, Cloneable {
 
 		DRONE_TIME_TO_FLY_IN_SECONDS, DRONE_POWER_IN_PERCENT,
 
-		KODEY_SPEED, KODEY_DURATION_IN_SECONDS, KODEY_LIGHT, IF_KODEY_SENSOR_CONDITION
+		PHIRO_PRO_SPEED, PHIRO_PRO_DURATION_IN_SECONDS, PHIRO_PRO_LIGHT, IF_PHIRO_PRO_SENSOR_CONDITION
 	}
 
 	//use bitwise | for using multiple ressources in a brick
@@ -58,7 +58,7 @@ public interface Brick extends Serializable, Cloneable {
 	int ARDRONE_SUPPORT = 0x20;
 	int CAMERA_LED = 0x100;
 	int VIBRATOR = 0x200;
-	int BLUETOOTH_KODEY = 0x400;
+	int BLUETOOTH_PHIRO_PRO = 0x400;
 
 	//	public static final int BLUETOOTH_ARDUINO = 0x8;
 	int FACE_DETECTION = 0x10;

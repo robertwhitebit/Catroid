@@ -54,9 +54,9 @@ import com.actionbarsherlock.view.Menu;
 import org.catrobat.catroid.ProjectManager;
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.content.bricks.Brick;
-import org.catrobat.catroid.content.bricks.KodeyMotorBackwardActionBrick;
-import org.catrobat.catroid.content.bricks.KodeyMotorForwardActionBrick;
-import org.catrobat.catroid.content.bricks.KodeyRGBLightBrick;
+import org.catrobat.catroid.content.bricks.PhiroProMotorMoveBackwardBrick;
+import org.catrobat.catroid.content.bricks.PhiroProMotorMoveForwardBrick;
+import org.catrobat.catroid.content.bricks.PhiroProRGBLightBrick;
 import org.catrobat.catroid.formulaeditor.Formula;
 import org.catrobat.catroid.formulaeditor.FormulaEditorEditText;
 import org.catrobat.catroid.formulaeditor.FormulaElement;
@@ -79,9 +79,9 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 	private static final int TIME_WINDOW = 2000;
 
 	public static final String FORMULA_EDITOR_FRAGMENT_TAG = "formula_editor_fragment";
-	public static final String FORMULA_EDITOR_MULTIPLE_SEEKBAR_FRAGMENT_TAG = "kodey_editor_multiple_seekbar_fragment";
-	public static final String FORMULA_EDITOR_MOTOR_FORWARD_SINGLE_SEEKBAR_FRAGMENT_TAG = "kodey_motor_forward_editor_single_seekbar_fragment";
-	public static final String FORMULA_EDITOR_MOTOR_BACKWARD_SINGLE_SEEKBAR_FRAGMENT_TAG = "kodey_motor_backward_editor_single_seekbar_fragment";
+	public static final String FORMULA_EDITOR_MULTIPLE_SEEKBAR_FRAGMENT_TAG = "phiro_pro_editor_multiple_seekbar_fragment";
+	public static final String FORMULA_EDITOR_MOTOR_FORWARD_SINGLE_SEEKBAR_FRAGMENT_TAG = "phiro_pro_motor_forward_editor_single_seekbar_fragment";
+	public static final String FORMULA_EDITOR_MOTOR_BACKWARD_SINGLE_SEEKBAR_FRAGMENT_TAG = "phiro_pro_motor_backward_editor_single_seekbar_fragment";
 	public static final String BRICK_BUNDLE_ARGUMENT = "brick";
 	public static final String FORMULA_BUNDLE_ARGUMENT = "formula";
 
@@ -111,10 +111,10 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 		currentBrick = (Brick) getArguments().getSerializable(BRICK_BUNDLE_ARGUMENT);
 		currentFormula = (Formula) getArguments().getSerializable(FORMULA_BUNDLE_ARGUMENT);
 
-		if (currentFormula.containsKodeySensors()) {
-			ProjectManager.getInstance().getCurrentProject().setIsKodeyProject(true);
+		if (currentFormula.containsPhiroProSensors()) {
+			ProjectManager.getInstance().getCurrentProject().setIsPhiroProProject(true);
 		} else {
-			ProjectManager.getInstance().getCurrentProject().setIsKodeyProject(false);
+			ProjectManager.getInstance().getCurrentProject().setIsPhiroProProject(false);
 		}
 	}
 
@@ -142,16 +142,16 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 		FragmentTransaction fragTransaction = fragmentManager.beginTransaction();
 
 		Fragment fragment = fragmentManager.findFragmentById(R.id.script_fragment_container);
-		String KODEY_TAG = ScriptFragment.TAG;
-		if(fragment.getClass() == KodeyMotorForwardSingleSeekbarFragment.class) {
-			KODEY_TAG = FORMULA_EDITOR_MOTOR_FORWARD_SINGLE_SEEKBAR_FRAGMENT_TAG;
-			((KodeyMotorForwardActionBrick)brick).setIsFormulaEditorPreview(true);
-		} else if(fragment.getClass() == KodeyMotorBackwardSingleSeekbarFragment.class){
-			KODEY_TAG = FORMULA_EDITOR_MOTOR_BACKWARD_SINGLE_SEEKBAR_FRAGMENT_TAG;
-			((KodeyMotorBackwardActionBrick)brick).setIsFormulaEditorPreview(true);
-		} else if(fragment.getClass() == KodeyMultipleSeekbarFragment.class){
-			KODEY_TAG = FORMULA_EDITOR_MULTIPLE_SEEKBAR_FRAGMENT_TAG;
-			((KodeyRGBLightBrick)brick).setIsFormulaEditorPreview(true);
+		String PHIRO_PRO_TAG = ScriptFragment.TAG;
+		if(fragment.getClass() == PhiroProMotorForwardSingleSeekbarFragment.class) {
+			PHIRO_PRO_TAG = FORMULA_EDITOR_MOTOR_FORWARD_SINGLE_SEEKBAR_FRAGMENT_TAG;
+			((PhiroProMotorMoveForwardBrick)brick).setIsFormulaEditorPreview(true);
+		} else if(fragment.getClass() == PhiroProMotorBackwardSingleSeekbarFragment.class){
+			PHIRO_PRO_TAG = FORMULA_EDITOR_MOTOR_BACKWARD_SINGLE_SEEKBAR_FRAGMENT_TAG;
+			((PhiroProMotorMoveBackwardBrick)brick).setIsFormulaEditorPreview(true);
+		} else if(fragment.getClass() == PhiroProMultipleSeekbarFragment.class){
+			PHIRO_PRO_TAG = FORMULA_EDITOR_MULTIPLE_SEEKBAR_FRAGMENT_TAG;
+			((PhiroProRGBLightBrick)brick).setIsFormulaEditorPreview(true);
 		}
 
 		if (formulaEditorFragment == null) {
@@ -162,18 +162,18 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 			formulaEditorFragment.setArguments(bundle);
 
 			fragTransaction.add(R.id.script_fragment_container, formulaEditorFragment, FORMULA_EDITOR_FRAGMENT_TAG);
-			fragTransaction.hide(fragmentManager.findFragmentByTag(KODEY_TAG));
+			fragTransaction.hide(fragmentManager.findFragmentByTag(PHIRO_PRO_TAG));
 
 			/*
-			//ToDo: #Kodey !!!!!!!
+			//ToDo: #PhiroPro !!!!!!!
 			if(fragmentManager.findFragmentByTag(FORMULA_EDITOR_MULTIPLE_SEEKBAR_FRAGMENT_TAG) != null) {
-				fragTransaction.hide(fragmentManager.findFragmentByTag(KodeyMultipleSeekbarFragment.FORMULA_EDITOR_MULTIPLE_SEEKBAR_FRAGMENT_TAG));
+				fragTransaction.hide(fragmentManager.findFragmentByTag(PhiroProMultipleSeekbarFragment.FORMULA_EDITOR_MULTIPLE_SEEKBAR_FRAGMENT_TAG));
 			}
 			if(fragmentManager.findFragmentByTag(FORMULA_EDITOR_MOTOR_FORWARD_SINGLE_SEEKBAR_FRAGMENT_TAG) != null) {
-				fragTransaction.hide(fragmentManager.findFragmentByTag(KodeyMotorForwardSingleSeekbarFragment.FORMULA_EDITOR_MOTOR_FORWARD_SINGLE_SEEKBAR_FRAGMENT_TAG));
+				fragTransaction.hide(fragmentManager.findFragmentByTag(PhiroProMotorForwardSingleSeekbarFragment.FORMULA_EDITOR_MOTOR_FORWARD_SINGLE_SEEKBAR_FRAGMENT_TAG));
 			}
 			if(fragmentManager.findFragmentByTag(FORMULA_EDITOR_MOTOR_BACKWARD_SINGLE_SEEKBAR_FRAGMENT_TAG) != null) {
-				fragTransaction.hide(fragmentManager.findFragmentByTag(KodeyMotorBackwardSingleSeekbarFragment.FORMULA_EDITOR_MOTOR_BACKWARD_SINGLE_SEEKBAR_FRAGMENT_TAG));
+				fragTransaction.hide(fragmentManager.findFragmentByTag(PhiroProMotorBackwardSingleSeekbarFragment.FORMULA_EDITOR_MOTOR_BACKWARD_SINGLE_SEEKBAR_FRAGMENT_TAG));
 			}
 			*/
 
@@ -181,18 +181,18 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 			BottomBar.hideBottomBar(activity);
 		} else if (formulaEditorFragment.isHidden()) {
 			formulaEditorFragment.updateBrickViewAndFormula(brick, formula);
-			fragTransaction.hide(fragmentManager.findFragmentByTag(KODEY_TAG));
+			fragTransaction.hide(fragmentManager.findFragmentByTag(PHIRO_PRO_TAG));
 
 			/*
-			//ToDo: #Kodey !!!!!!!
+			//ToDo: #PhiroPro !!!!!!!
 			if(fragmentManager.findFragmentByTag(FORMULA_EDITOR_MULTIPLE_SEEKBAR_FRAGMENT_TAG) != null) {
-				fragTransaction.hide(fragmentManager.findFragmentByTag(KodeyMultipleSeekbarFragment.FORMULA_EDITOR_MULTIPLE_SEEKBAR_FRAGMENT_TAG));
+				fragTransaction.hide(fragmentManager.findFragmentByTag(PhiroProMultipleSeekbarFragment.FORMULA_EDITOR_MULTIPLE_SEEKBAR_FRAGMENT_TAG));
 			}
 			if(fragmentManager.findFragmentByTag(FORMULA_EDITOR_MOTOR_FORWARD_SINGLE_SEEKBAR_FRAGMENT_TAG) != null) {
-				fragTransaction.hide(fragmentManager.findFragmentByTag(KodeyMotorForwardSingleSeekbarFragment.FORMULA_EDITOR_MOTOR_FORWARD_SINGLE_SEEKBAR_FRAGMENT_TAG));
+				fragTransaction.hide(fragmentManager.findFragmentByTag(PhiroProMotorForwardSingleSeekbarFragment.FORMULA_EDITOR_MOTOR_FORWARD_SINGLE_SEEKBAR_FRAGMENT_TAG));
 			}
 			if(fragmentManager.findFragmentByTag(FORMULA_EDITOR_MOTOR_BACKWARD_SINGLE_SEEKBAR_FRAGMENT_TAG) != null) {
-				fragTransaction.hide(fragmentManager.findFragmentByTag(KodeyMotorBackwardSingleSeekbarFragment.FORMULA_EDITOR_MOTOR_BACKWARD_SINGLE_SEEKBAR_FRAGMENT_TAG));
+				fragTransaction.hide(fragmentManager.findFragmentByTag(PhiroProMotorBackwardSingleSeekbarFragment.FORMULA_EDITOR_MOTOR_BACKWARD_SINGLE_SEEKBAR_FRAGMENT_TAG));
 			}
 			*/
 
@@ -235,50 +235,50 @@ public class FormulaEditorFragment extends SherlockFragment implements OnKeyList
 		FragmentTransaction fragTransaction = fragmentManager.beginTransaction();
 		fragTransaction.hide(this);
 
-		//ToDo: #Kodey check for RGB Brick
+		//ToDo: #PhiroPro check for RGB Brick
 		if(fragmentManager.findFragmentByTag(FORMULA_EDITOR_MULTIPLE_SEEKBAR_FRAGMENT_TAG) != null) {
 			if (fragmentManager.findFragmentByTag(ScriptFragment.TAG).getTag() == FORMULA_EDITOR_MULTIPLE_SEEKBAR_FRAGMENT_TAG) {
-				fragTransaction.show(fragmentManager.findFragmentByTag(KodeyMultipleSeekbarFragment.FORMULA_EDITOR_MULTIPLE_SEEKBAR_FRAGMENT_TAG));
+				fragTransaction.show(fragmentManager.findFragmentByTag(PhiroProMultipleSeekbarFragment.FORMULA_EDITOR_MULTIPLE_SEEKBAR_FRAGMENT_TAG));
 				fragTransaction.hide(fragmentManager.findFragmentByTag(ScriptFragment.TAG));
-				((KodeyRGBLightBrick)currentBrick).setIsFormulaEditorPreview(true);
+				((PhiroProRGBLightBrick)currentBrick).setIsFormulaEditorPreview(true);
 			} else {
 				fragTransaction.show(fragmentManager.findFragmentByTag(ScriptFragment.TAG));
-				fragTransaction.remove(fragmentManager.findFragmentByTag(KodeyMultipleSeekbarFragment.FORMULA_EDITOR_MULTIPLE_SEEKBAR_FRAGMENT_TAG));
-				((KodeyRGBLightBrick)currentBrick).setIsFormulaEditorPreview(false);
+				fragTransaction.remove(fragmentManager.findFragmentByTag(PhiroProMultipleSeekbarFragment.FORMULA_EDITOR_MULTIPLE_SEEKBAR_FRAGMENT_TAG));
+				((PhiroProRGBLightBrick)currentBrick).setIsFormulaEditorPreview(false);
 			}
 		}
-		//ToDo: #Kodey check for Motor Forward Brick
+		//ToDo: #PhiroPro check for Motor Forward Brick
 		else if(fragmentManager.findFragmentByTag(FORMULA_EDITOR_MOTOR_FORWARD_SINGLE_SEEKBAR_FRAGMENT_TAG) != null) {
 			if (fragmentManager.findFragmentByTag(ScriptFragment.TAG).getTag() == FORMULA_EDITOR_MOTOR_FORWARD_SINGLE_SEEKBAR_FRAGMENT_TAG) {
-				fragTransaction.show(fragmentManager.findFragmentByTag(KodeyMotorForwardSingleSeekbarFragment.FORMULA_EDITOR_MOTOR_FORWARD_SINGLE_SEEKBAR_FRAGMENT_TAG));
+				fragTransaction.show(fragmentManager.findFragmentByTag(PhiroProMotorForwardSingleSeekbarFragment.FORMULA_EDITOR_MOTOR_FORWARD_SINGLE_SEEKBAR_FRAGMENT_TAG));
 				fragTransaction.hide(fragmentManager.findFragmentByTag(ScriptFragment.TAG));
-				((KodeyMotorForwardActionBrick)currentBrick).setIsFormulaEditorPreview(true);
+				((PhiroProMotorMoveForwardBrick)currentBrick).setIsFormulaEditorPreview(true);
 			} else {
 				fragTransaction.show(fragmentManager.findFragmentByTag(ScriptFragment.TAG));
-				fragTransaction.remove(fragmentManager.findFragmentByTag(KodeyMotorForwardSingleSeekbarFragment.FORMULA_EDITOR_MOTOR_FORWARD_SINGLE_SEEKBAR_FRAGMENT_TAG));
-				((KodeyMotorForwardActionBrick)currentBrick).setIsFormulaEditorPreview(false);
+				fragTransaction.remove(fragmentManager.findFragmentByTag(PhiroProMotorForwardSingleSeekbarFragment.FORMULA_EDITOR_MOTOR_FORWARD_SINGLE_SEEKBAR_FRAGMENT_TAG));
+				((PhiroProMotorMoveForwardBrick)currentBrick).setIsFormulaEditorPreview(false);
 			}
 		}
-		//ToDo: #Kodey check for Motor Backward Brick
+		//ToDo: #PhiroPro check for Motor Backward Brick
 		else if(fragmentManager.findFragmentByTag(FORMULA_EDITOR_MOTOR_BACKWARD_SINGLE_SEEKBAR_FRAGMENT_TAG) != null) {
 			if (fragmentManager.findFragmentByTag(ScriptFragment.TAG).getTag() == FORMULA_EDITOR_MOTOR_BACKWARD_SINGLE_SEEKBAR_FRAGMENT_TAG) {
-				fragTransaction.show(fragmentManager.findFragmentByTag(KodeyMotorBackwardSingleSeekbarFragment.FORMULA_EDITOR_MOTOR_BACKWARD_SINGLE_SEEKBAR_FRAGMENT_TAG));
+				fragTransaction.show(fragmentManager.findFragmentByTag(PhiroProMotorBackwardSingleSeekbarFragment.FORMULA_EDITOR_MOTOR_BACKWARD_SINGLE_SEEKBAR_FRAGMENT_TAG));
 				fragTransaction.hide(fragmentManager.findFragmentByTag(ScriptFragment.TAG));
-				((KodeyMotorBackwardActionBrick)currentBrick).setIsFormulaEditorPreview(true);
+				((PhiroProMotorMoveBackwardBrick)currentBrick).setIsFormulaEditorPreview(true);
 			} else {
 				fragTransaction.show(fragmentManager.findFragmentByTag(ScriptFragment.TAG));
-				fragTransaction.remove(fragmentManager.findFragmentByTag(KodeyMotorBackwardSingleSeekbarFragment.FORMULA_EDITOR_MOTOR_BACKWARD_SINGLE_SEEKBAR_FRAGMENT_TAG));
-				((KodeyMotorBackwardActionBrick)currentBrick).setIsFormulaEditorPreview(false);
+				fragTransaction.remove(fragmentManager.findFragmentByTag(PhiroProMotorBackwardSingleSeekbarFragment.FORMULA_EDITOR_MOTOR_BACKWARD_SINGLE_SEEKBAR_FRAGMENT_TAG));
+				((PhiroProMotorMoveBackwardBrick)currentBrick).setIsFormulaEditorPreview(false);
 			}
 		}
 		else {
 			fragTransaction.show(fragmentManager.findFragmentByTag(ScriptFragment.TAG));
-			if(currentBrick.getClass().equals(KodeyMotorForwardActionBrick.class)) {
-					((KodeyMotorForwardActionBrick) currentBrick).setIsFormulaEditorPreview(false);
-			} else if(currentBrick.getClass().equals(KodeyMotorBackwardActionBrick.class)) {
-				((KodeyMotorBackwardActionBrick) currentBrick).setIsFormulaEditorPreview(false);
-			} else if(currentBrick.getClass().equals(KodeyRGBLightBrick.class)) {
-				((KodeyRGBLightBrick) currentBrick).setIsFormulaEditorPreview(false);
+			if(currentBrick.getClass().equals(PhiroProMotorMoveForwardBrick.class)) {
+					((PhiroProMotorMoveForwardBrick) currentBrick).setIsFormulaEditorPreview(false);
+			} else if(currentBrick.getClass().equals(PhiroProMotorMoveBackwardBrick.class)) {
+				((PhiroProMotorMoveBackwardBrick) currentBrick).setIsFormulaEditorPreview(false);
+			} else if(currentBrick.getClass().equals(PhiroProRGBLightBrick.class)) {
+				((PhiroProRGBLightBrick) currentBrick).setIsFormulaEditorPreview(false);
 			}
 		}
 

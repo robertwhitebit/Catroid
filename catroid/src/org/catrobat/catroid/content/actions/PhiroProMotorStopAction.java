@@ -20,26 +20,46 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.catrobat.catroid.bluetooth.base;
+package org.catrobat.catroid.content.actions;
 
+import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
+
+import org.catrobat.catroid.bluetooth.base.BluetoothDevice;
+import org.catrobat.catroid.bluetooth.base.BluetoothDeviceService;
+import org.catrobat.catroid.common.CatroidService;
+import org.catrobat.catroid.common.ServiceProvider;
+import org.catrobat.catroid.content.bricks.PhiroProMotorStopBrick.Motor;
 import org.catrobat.catroid.devices.arduino.phiropro.PhiroPro;
-import org.catrobat.catroid.stage.StageResourceInterface;
 
-import java.util.UUID;
+public class PhiroProMotorStopAction extends TemporalAction {
 
-public interface BluetoothDevice extends StageResourceInterface {
+	private Motor motorEnum;
 
-//	Class<LegoNXT> LEGO_NXT = LegoNXT.class;
-//	Class<Arduino> ARDUINO = Arduino.class;
-//	Class<Albert> ALBERT = Albert.class;
-	Class<PhiroPro> PHIRO_PRO = PhiroPro.class;
+	private BluetoothDeviceService btService = ServiceProvider.getService(CatroidService.BLUETOOTH_DEVICE_SERVICE);
 
-	String getName();
-	Class<? extends BluetoothDevice> getDeviceType();
-	void setConnection(BluetoothConnection connection);
-	void disconnect();
+	@Override
+	protected void update(float percent) {
 
-	boolean isAlive();
+		PhiroPro phiroPro = btService.getDevice(BluetoothDevice.PHIRO_PRO);
+		if (phiroPro == null) {
+			return;
+		}
 
-	UUID getBluetoothDeviceUUID();
+		switch (motorEnum) {
+			case MOTOR_A:
+				phiroPro.stopLeftMotor();
+				break;
+			case MOTOR_B:
+				phiroPro.stopRightMotor();
+				break;
+			case ALL_MOTORS:
+				phiroPro.stopAllMovements();
+				break;
+		}
+	}
+
+	public void setMotorEnum(Motor motorEnum) {
+		this.motorEnum = motorEnum;
+	}
+
 }
