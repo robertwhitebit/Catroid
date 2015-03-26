@@ -703,4 +703,9 @@ public class StageListener implements ApplicationListener {
 	{
 		stage.addActor(look);
 	}
+
+	public void removeActor (Look look)
+	{
+		look.remove();
+	}
 }
