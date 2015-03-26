@@ -1,6 +1,6 @@
 /*
  * Catroid: An on-device visual programming system for Android devices
- * Copyright (C) 2010-2014 The Catrobat Team
+ * Copyright (C) 2010-2015 The Catrobat Team
  * (<http://developer.catrobat.org/credits>)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,46 +20,48 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package org.catrobat.catroid.content.actions;
 
 import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
+import com.parrot.freeflight.drone.DroneConfig;
 
-import org.catrobat.catroid.content.Sprite;
-import org.catrobat.catroid.formulaeditor.Formula;
+import org.catrobat.catroid.R;
+import org.catrobat.catroid.drone.DroneConfigManager;
 
-public class SetTextAction extends TemporalAction {
+/**
+ * Created by marc on 18.02.2015.
+ */
+public class DroneSetConfigAction extends TemporalAction {
 
-	private Formula endX;
-	private Formula endY;
-	private Sprite sprite;
-	private Formula duration;
-
-	@Override
-	protected void begin() {
-		// von hier müssten wir igrendwie auf den StageListener zugreifen können, aber wie?
-		//Über Look?
-	}
+	private int ressourceID;
 
 	@Override
 	protected void update(float percent) {
+
 	}
 
-	public void setDuration(Formula duration) {
-		this.duration = duration;
+	@Override
+	protected void begin(){
+
+		switch (getRessourceID()){
+			case R.string.drone_config_default:
+				DroneConfigManager.getInstance().setDefaultConfig();
+				break;
+			case R.string.drone_config_outdoor:
+				DroneConfigManager.getInstance().setOutdoorConfig();
+				break;
+			case R.string.drone_config_indoor:
+				DroneConfigManager.getInstance().setIndoorConfig();
+				break;
+		}
 	}
 
-	public void setPosition(Formula x, Formula y) {
-		endX = x;
-		endY = y;
+	public int getRessourceID() {
+		return ressourceID;
 	}
 
-	public void setText(Formula text) {
-		// this.text = text;
+	public void setRessourceID(int ressourceID) {
+		this.ressourceID = ressourceID;
 	}
-
-	public void setSprite(Sprite sprite) {
-		this.sprite = sprite;
-	}
-
-
 }

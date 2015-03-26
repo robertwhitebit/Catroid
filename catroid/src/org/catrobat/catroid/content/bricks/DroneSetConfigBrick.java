@@ -23,11 +23,8 @@
 package org.catrobat.catroid.content.bricks;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
-import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -43,40 +40,38 @@ import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 
 import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.MessageContainer;
-import org.catrobat.catroid.content.BroadcastMessage;
 import org.catrobat.catroid.content.Sprite;
 import org.catrobat.catroid.content.actions.ExtendedActions;
-import org.catrobat.catroid.drone.DroneConfigManager;
 import org.catrobat.catroid.drone.DroneInitializer;
-import org.catrobat.catroid.ui.dialogs.BrickTextDialog;
 
 import java.util.List;
 
-public class DroneSetConfig extends BrickBaseType{
+public class DroneSetConfigBrick extends BrickBaseType{
 	private static final long serialVersionUID = 1L;
 
-	protected String broadcastMessage;
 	protected transient AdapterView<?> adapterView;
+	private String selectedMessage;
+	private Context context;
 
 /*	protected Object readResolve() {
 		MessageContainer.addMessage(broadcastMessage);
 		return this;
 	}*/
 
-	public DroneSetConfig() {//String droneConfig) {
+	public DroneSetConfigBrick() {//String droneConfig) {
 //		this.broadcastMessage = droneConfig;
 //		MessageContainer.addMessage(droneConfig);
 	}
 
 	@Override
 	public Brick copyBrickForSprite(Sprite sprite) {
-		DroneSetConfig copyBrick = (DroneSetConfig) clone();
+		DroneSetConfigBrick copyBrick = (DroneSetConfigBrick) clone();
 		return copyBrick;
 	}
 
 	@Override
 	public Brick clone() {
-		return new DroneSetConfig();//broadcastMessage);
+		return new DroneSetConfigBrick();//broadcastMessage);
 	}
 
 	@Override
@@ -92,6 +87,8 @@ public class DroneSetConfig extends BrickBaseType{
 		if (view == null) {
 			alphaValue = 255;
 		}
+		this.context = context;
+
 		view = View.inflate(context, R.layout.brick_set_config, null);
 		view = getViewWithAlpha(alphaValue);
 		setCheckboxView(R.id.brick_set_config_checkbox);
@@ -101,7 +98,7 @@ public class DroneSetConfig extends BrickBaseType{
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				checked = isChecked;
-				adapter.handleCheck(DroneSetConfig.this, isChecked);
+				adapter.handleCheck(DroneSetConfigBrick.this, isChecked);
 			}
 		});
 
@@ -129,18 +126,7 @@ public class DroneSetConfig extends BrickBaseType{
 		setConfigSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-				String selectedMessage = setConfigSpinner.getSelectedItem().toString();
-
-
-				if (selectedMessage.compareTo(context.getString(R.string.drone_config_default)) == 0 && DroneInitializer.droneControlService != null){
-					DroneConfigManager.getInstance().setDefaultConfig();
-				} else if (selectedMessage.compareTo(context.getString(R.string.drone_config_indoor)) == 0 && DroneInitializer.droneControlService != null){
-					DroneConfigManager.getInstance().setIndoorConfig();
-				} else if (selectedMessage.compareTo(context.getString(R.string.drone_config_outdoor)) == 0 && DroneInitializer.droneControlService != null){
-					DroneConfigManager.getInstance().setOutdoorConfig();
-				}
-
-				broadcastMessage = selectedMessage;
+				selectedMessage = setConfigSpinner.getSelectedItem().toString();
 				adapterView = parent;
 			}
 
@@ -191,53 +177,26 @@ public class DroneSetConfig extends BrickBaseType{
 	}
 
 	protected void setSpinnerSelection(Spinner spinner) {
-		int position = MessageContainer.getPositionOfMessageInAdapter(spinner.getContext(), broadcastMessage);
+		int position = MessageContainer.getPositionOfMessageInAdapter(spinner.getContext(), selectedMessage);
 		spinner.setSelection(position, true);
 	}
 
-/*	// TODO: BroadcastBrick and BroadcastReceiverBrick contain this identical method.
-	protected void showNewMessageDialog(final Spinner spinner) {
-		final Context context = spinner.getContext();
-		BrickTextDialog editDialog = new BrickTextDialog() {
-
-			@Override
-			protected void initialize() {
-				inputTitle.setText(R.string.dialog_new_broadcast_message_name);
-			}
-
-			@Override
-			protected boolean handleOkButton() {
-				String newMessage = (input.getText().toString()).trim();
-				if (newMessage.isEmpty() || newMessage.equals(context.getString(R.string.new_broadcast_message))) {
-					dismiss();
-					return false;
-				}
-
-				broadcastMessage = newMessage;
-				MessageContainer.addMessage(broadcastMessage);
-				setSpinnerSelection(spinner);
-				return true;
-			}
-
-			@Override
-			public void onDismiss(DialogInterface dialog) {
-				setSpinnerSelection(spinner);
-				super.onDismiss(dialog);
-			}
-
-			@Override
-			protected String getTitle() {
-				return getString(R.string.dialog_new_broadcast_message_title);
-			}
-
-		};
-
-		editDialog.show(((FragmentActivity) context).getSupportFragmentManager(), "dialog_broadcast_brick");
-	}*/
 
 	@Override
 	public List<SequenceAction> addActionToSequence(Sprite sprite, SequenceAction sequence) {
-		sequence.addAction(ExtendedActions.broadcast(sprite, broadcastMessage));
+
+		if(this.context == null || DroneInitializer.droneControlService == null){
+			return null;
+		}
+
+		if (selectedMessage.compareTo(this.context.getString(R.string.drone_config_default)) == 0 ){
+			sequence.addAction(ExtendedActions.droneSetConfig(R.string.drone_config_default ));
+		} else if (selectedMessage.compareTo(this.context.getString(R.string.drone_config_indoor)) == 0 ) {
+			sequence.addAction(ExtendedActions.droneSetConfig(R.string.drone_config_indoor ));
+		} else if (selectedMessage.compareTo(this.context.getString(R.string.drone_config_outdoor)) == 0 ) {
+			sequence.addAction(ExtendedActions.droneSetConfig(R.string.drone_config_outdoor ));
+		}
+
 		return null;
 	}
 }

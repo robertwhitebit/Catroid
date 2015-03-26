@@ -64,6 +64,7 @@ import org.catrobat.catroid.content.bricks.DroneMoveLeftBrick;
 import org.catrobat.catroid.content.bricks.DroneMoveRightBrick;
 import org.catrobat.catroid.content.bricks.DroneMoveUpBrick;
 import org.catrobat.catroid.content.bricks.DronePlayLedAnimationBrick;
+import org.catrobat.catroid.content.bricks.DroneSetConfigBrick;
 import org.catrobat.catroid.content.bricks.DroneSetTextBrick;
 import org.catrobat.catroid.content.bricks.DroneTakeOffLandBrick;
 import org.catrobat.catroid.content.bricks.ForeverBrick;
@@ -287,6 +288,7 @@ public final class StorageHandler {
 		xstream.alias("brick", DroneMoveDownBrick.class);
 		xstream.alias("brick", DroneMoveLeftBrick.class);
 		xstream.alias("brick", DroneMoveRightBrick.class);
+		xstream.alias("brick", DroneSetConfigBrick.class);
 		xstream.alias("brick", DroneSetTextBrick.class);
 
 		xstream.alias("userBrickElements", UserScriptDefinitionBrickElements.class);
@@ -321,6 +323,12 @@ public final class StorageHandler {
 			return (Project) xstream.getProjectFromXML(projectCodeFile);
 		} catch (Exception exception) {
 			Log.e(TAG, "Loading project " + projectName + " failed.", exception);
+			try {
+				Log.e(TAG, "delete project " + projectName, exception);
+				deleteProject(projectName);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			return null;
 		} finally {
 			if (fileInputStream != null) {
@@ -655,15 +663,16 @@ public final class StorageHandler {
 	}
 
 	public void deleteFile(String filepath) {
-		FileChecksumContainer container = ProjectManager.getInstance().getFileChecksumContainer();
-		try {
-			if (container.decrementUsage(filepath)) {
-				File toDelete = new File(filepath);
-				toDelete.delete();
+		File fileToDelete = new File(filepath);
+		if (fileToDelete.exists()) {
+			FileChecksumContainer container = ProjectManager.getInstance().getFileChecksumContainer();
+			try {
+				if (container.decrementUsage(filepath)) {
+					fileToDelete.delete();
+				}
+			} catch (FileNotFoundException fileNotFoundException) {
+				Log.e(TAG, Log.getStackTraceString(fileNotFoundException));
 			}
-		} catch (FileNotFoundException fileNotFoundException) {
-			Log.e(TAG, Log.getStackTraceString(fileNotFoundException));
-			//deleteFile(filepath);
 		}
 	}
 
