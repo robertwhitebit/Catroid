@@ -148,6 +148,8 @@ public class StageListener implements ApplicationListener {
 
 	private byte[] thumbnail;
 
+	public static String setdrawText = "";
+
 	StageListener() {
 	}
 
@@ -702,5 +704,10 @@ public class StageListener implements ApplicationListener {
 	public void addActor (Look look)
 	{
 		stage.addActor(look);
+
+	}
+
+	public Stage getStage() {
+		return stage;
 	}
 }
