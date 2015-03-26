@@ -26,7 +26,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.opengl.GLES20;
-import android.opengl.GLSurfaceView;
 import android.opengl.GLUtils;
 import android.os.SystemClock;
 
@@ -44,7 +43,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.google.common.collect.Multimap;
@@ -52,7 +50,6 @@ import com.parrot.freeflight.ui.gl.GLBGVideoSprite;
 
 import org.catrobat.catroid.BuildConfig;
 import org.catrobat.catroid.ProjectManager;
-import org.catrobat.catroid.R;
 import org.catrobat.catroid.common.Constants;
 import org.catrobat.catroid.common.LookData;
 import org.catrobat.catroid.common.ScreenModes;
@@ -147,6 +144,8 @@ public class StageListener implements ApplicationListener {
 	public boolean axesOn = false;
 
 	private byte[] thumbnail;
+
+	public static String setdrawText = "";
 
 	StageListener() {
 	}
@@ -410,6 +409,15 @@ public class StageListener implements ApplicationListener {
 		if (makeTestPixels) {
 			testPixels = ScreenUtils.getFrameBufferPixels(testX, testY, testWidth, testHeight, false);
 			makeTestPixels = false;
+		}
+
+		if (BuildConfig.FEATURE_PARROT_AR_DRONE_ENABLED) {
+			int width = Gdx.graphics.getWidth();
+			int height = Gdx.graphics.getHeight();
+			drawText("Surface: " + width + " : " + height, -width / 2, height / 2, 2);
+			drawText("   ARDRONE", width / 6, height / 2-20, 1.5f);
+			drawText("SUPPORTED", width / 6, height / 2-50, 1.5f);
+			drawText(setdrawText, 0,0,2f);
 		}
 
 		//drawVideoOpenGL();
@@ -702,6 +710,22 @@ public class StageListener implements ApplicationListener {
 	public void addActor (Look look)
 	{
 		stage.addActor(look);
+
+	}
+
+	public Stage getStage() {
+		return stage;
+	}
+
+	public void drawText(String text, int posX, int posY, float scale){
+		font.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+		font.setScale(scale);
+
+		SpriteBatch batch = stage.getSpriteBatch();
+		batch.begin();
+		font.draw(batch, text, posX, posY);
+		batch.end();
+
 	}
 
 	public void removeActor (Look look)
