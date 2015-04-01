@@ -345,7 +345,6 @@ public class PhiroProMultipleSeekbarFragment extends SherlockFragment implements
 		String greenFormulaString = formulaEditorEditTextGreen.getText().toString().trim();
 		String blueFormulaString = formulaEditorEditTextBlue.getText().toString().trim();
 
-		//ToDO: talk with Wolfgang (what happens if a values is greater than 255 and smaller than 0)
 		color = Color.rgb(Integer.parseInt(redFormulaString), Integer.parseInt(greenFormulaString), Integer.parseInt(blueFormulaString));
 		redSeekBar.setProgress(Color.red(color));
 		greenSeekBar.setProgress(Color.green(color));
