@@ -65,7 +65,7 @@ public class PhiroProMotorMoveForwardBrick extends FormulaBrick implements OnCli
 	}
 
 	public static enum Motor {
-		MOTOR_A, MOTOR_B, MOTOR_A_B
+		MOTOR_LEFT, MOTOR_RIGHT, MOTOR_BOTH
 	}
 
 	public PhiroProMotorMoveForwardBrick() {
